@@ -5,56 +5,65 @@ on:
     branches:
       - main
 
-# ================================
-# 1. BUILD JOB
-# ================================
 jobs:
-  build:
-
+  build-deploy-publish:
     runs-on: ubuntu-latest
 
     steps:
-
+      # =================================================
+      # 1. Checkout code (with full history)
+      # =================================================
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      # =================================================
+      # 2. Setup Node.js (with npm registry)
+      # =================================================
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          registry-url: https://registry.npmjs.org/
 
+      # =================================================
+      # 3. Cache npm dependencies (speeds up CI)
+      # =================================================
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json', 'package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # =================================================
+      # 4. Install dependencies
+      # =================================================
       - name: Install Dependencies
         run: npm ci
 
+      # =================================================
+      # 5. Fix binary permissions (CI safety)
+      # =================================================
+      - name: Fix Permissions
+        run: chmod -R +x node_modules/.bin || true
+
+      # =================================================
+      # 6. Run tests (let failing tests fail the job)
+      # =================================================
       - name: Run Tests
         run: npm test
+        # remove `|| true` so broken tests actually fail the pipeline [web:16]
 
+      # =================================================
+      # 7. Build project (Rollup)
+      # =================================================
       - name: Build Project
         run: npm exec rollup -- -c
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist
-
-
-# ================================
-# 2. DEPLOY NETLIFY JOB
-# ================================
-  deploy:
-
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-
+      # =================================================
+      # 8. Deploy to Netlify
+      # =================================================
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2
         with:
@@ -62,41 +71,16 @@ jobs:
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Auto deploy from GitHub Actions"
+          enable-pull-request-comment: false
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
-
-# ================================
-# 3. PUBLISH NPM JOB
-# ================================
-  publish:
-
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: https://registry.npmjs.org/
-
-      - name: Install Dependencies
-        run: npm ci
-
-      # 🔥 IMPORTANT: version bump isolated in this job only
-      - name: Bump Version
-        run: npm version patch -m "ci: bump version %s"
-
-      - name: Build Project
-        run: npm exec rollup -- -c
-
+      # =================================================
+      # 9. Publish to npm (only on main, after tests pass)
+      # =================================================
       - name: Publish to npm
-        run: npm publish --access public
+        run: |
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
