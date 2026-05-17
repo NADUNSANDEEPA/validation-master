@@ -67,10 +67,10 @@ describe("NIC Validation Tests", () => {
     // ─────────────────────────────────────────────
 
     test("valid LK old NIC with V should pass", () => {
-        const result = ValidationMaster.nic("987654321V", "LK");
+        const result = ValidationMaster.nic("992881658V", "LK");
         expect(result.success).toBe(true);
         expect(result.status).toBe(200);
-        expect(result.data).toBe("987654321V");
+        expect(result.data).toBe("992881658V");
     });
 
     test("valid LK old NIC with X should pass", () => {
