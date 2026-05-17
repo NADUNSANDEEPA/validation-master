@@ -1,0 +1,321 @@
+<!-- ========================================= -->
+<!-- FILE: bank-card-validation.html -->
+<!-- ========================================= -->
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Bank Card Validation - verify-master</title>
+
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+
+        <link href="../css/common.css" rel="stylesheet">
+    </head>
+
+    <body>
+
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+            <div class="container">
+
+                <a class="navbar-brand fw-bold" href="../index.html">
+                    verify-master
+                </a>
+
+                <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#nav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="nav">
+
+                    <ul class="navbar-nav ms-auto">
+
+                        <li class="nav-item">
+                            <a class="nav-link active"
+                                href="bank-card-validation.html">
+                                Bank Card Validation
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="password-strength-validation.html">
+                                Password Validation
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+        <!-- HERO -->
+        <section class="hero text-center">
+
+            <div class="container">
+
+                <h1 class="display-4 fw-bold">
+                    💳 Bank Card Type Validation
+                </h1>
+
+                <p class="lead mt-3">
+                    Detect global debit and credit card types using card number
+                    patterns.
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- CONTENT -->
+        <section class="py-5">
+
+            <div class="container">
+
+                <!-- Installation -->
+                <div class="card shadow-sm mb-5">
+
+                    <div class="card-body">
+
+                        <h2>📦 Installation</h2>
+
+                        <pre class="bg-dark text-light p-3 mt-3">
+<code>
+npm install verify-master
+</code>
+</pre>
+
+                    </div>
+
+                </div>
+
+                <!-- Basic Example -->
+                <div class="card shadow-sm mb-5 example-card">
+
+                    <div class="card-body">
+
+                        <h2>🚀 Basic Example</h2>
+
+                        <pre class="bg-dark text-light p-3 mt-3">
+<code>
+import { validateBankCardType } from "verify-master";
+
+const result = validateBankCardType("4111111111111111");
+
+console.log(result);
+</code>
+</pre>
+
+                    </div>
+
+                </div>
+
+                <!-- Success Response -->
+                <div class="card shadow-sm mb-5">
+
+                    <div class="card-body">
+
+                        <h2>✅ Success Response</h2>
+
+                        <pre class="bg-success text-light p-3 mt-3">
+<code>
+{
+  success: true,
+  code: 200,
+  message: "Valid card type",
+  data: {
+    cardNumber: "4111111111111111",
+    cardType: "Visa"
+  },
+  errors: null
+}
+</code>
+</pre>
+
+                    </div>
+
+                </div>
+
+                <!-- Invalid Example -->
+                <div class="card shadow-sm mb-5">
+
+                    <div class="card-body">
+
+                        <h2>❌ Invalid Card Example</h2>
+
+                        <pre class="bg-dark text-light p-3 mt-3">
+<code>
+const result = validateBankCardType("9999999999999999");
+
+console.log(result);
+</code>
+</pre>
+
+                        <pre class="bg-danger text-light p-3 mt-4">
+<code>
+{
+  success: false,
+  code: 400,
+  message: "Unknown card type",
+  data: null,
+  errors: null
+}
+</code>
+</pre>
+
+                    </div>
+
+                </div>
+
+                <!-- Supported Cards -->
+                <div class="card shadow-sm mb-5">
+
+                    <div class="card-body">
+
+                        <h2>🌍 Supported Global Card Types</h2>
+
+                        <div class="table-responsive mt-4">
+
+                            <table class="table table-bordered table-striped">
+
+                                <thead class="table-dark">
+
+                                    <tr>
+                                        <th>Card Type</th>
+                                        <th>Example Prefix</th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    <tr>
+                                        <td>Visa</td>
+                                        <td>4</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Mastercard</td>
+                                        <td>51-55 / 2221-2720</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>American Express</td>
+                                        <td>34 / 37</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Discover</td>
+                                        <td>6011 / 65</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Diners Club</td>
+                                        <td>300-305 / 36 / 38</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>JCB</td>
+                                        <td>3528-3589</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>UnionPay</td>
+                                        <td>62</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Maestro</td>
+                                        <td>50 / 56-69</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>RuPay (India)</td>
+                                        <td>60 / 65 / 81 / 82</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Verve (Africa)</td>
+                                        <td>5060 / 6500</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Troy (Turkey)</td>
+                                        <td>9792</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>MIR (Russia)</td>
+                                        <td>2200-2204</td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Validation Rules -->
+                <div class="card shadow-sm mb-5">
+
+                    <div class="card-body">
+
+                        <h2>📋 Validation Rules</h2>
+
+                        <ul class="mt-3">
+
+                            <li>Card number must be a string</li>
+
+                            <li>Card type is detected using BIN/prefix
+                                patterns</li>
+
+                            <li>Supports major global credit & debit card
+                                networks</li>
+
+                            <li>Returns detected card type with card number</li>
+
+                            <li>Unknown patterns return validation failure</li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <!-- Navigation -->
+                <div class="d-flex justify-content-between">
+
+                    <a href="password-strength-validation.html"
+                        class="btn btn-secondary">
+                        ← Previous: Password Validation
+                    </a>
+
+                    <a href="../index.html" class="btn btn-primary">
+                        Next: Home →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+    </body>
+
+</html>
