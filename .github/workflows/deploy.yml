@@ -30,24 +30,24 @@ jobs:
       - name: Run Tests
         run: npm test || true
 
-      # 5. Build project (if needed)
+      # 5. Build project
       - name: Build Project
-        run: npm run build || true
+        run: npx rollup -c
 
       # 6. Deploy to Netlify
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2
         with:
-          publish-dir: ./dist
-          production-branch: main
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Auto deploy from GitHub Actions"
+            publish-dir: ./dist
+            production-branch: main
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            deploy-message: "Auto deploy from GitHub Actions"
         env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+            NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+            NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
       # 7. Publish to npm
       - name: Publish to npm
         run: npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+            NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
