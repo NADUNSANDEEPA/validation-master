@@ -1,0 +1,39 @@
+{
+  "name": "validationmaster",
+  "version": "1.0.0",
+  "description": "Lightweight validation library for JavaScript and React applications.",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.cjs"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
+  },
+  "keywords": [
+    "validation",
+    "email validation",
+    "phone validation",
+    "react validation",
+    "form validation"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^30.4.2",
+    "rollup": "^4.60.4",
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "babel-jest": "^30.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
+  }
+}
