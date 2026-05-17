@@ -71,7 +71,7 @@ Every validator returns a **consistent response object**:
 | _More coming soon..._ | — | — | — |
 
 > 📖 **Full documentation, examples, and supported country lists:**
-> ### 👉 [verify-master Documentation](https://github.com/your-username/verify-master/wiki)
+> ### 👉 [verify-master Documentation](https://verify-master.netlify.app)
 
 ---
 
