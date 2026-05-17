@@ -60,15 +60,7 @@ Every validator returns a **consistent response object**:
 
 ---
 
-## 🧩 Available Validators
-
-| Validator | Method | Countries |
-|-----------|--------|-----------|------|
-| 📧 Email | `ValidationMaster.email()` | Universal |
-| 📞 Phone | `ValidationMaster.phone()` | 195 |
-| 🪪 NIC / National ID | `ValidationMaster.nic()` | 195 |
-| 🛂 Passport | `ValidationMaster.passport()` | 195 |
-| _More coming soon..._ | — | — |
+## 🧩 Full documentation
 
 > 📖 **Full documentation, examples, and supported country lists:**
 > ### 👉 [verify-master Documentation](https://verify-master.netlify.app)
