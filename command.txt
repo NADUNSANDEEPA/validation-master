@@ -36,6 +36,12 @@ git commit -m "initial commit"
 git push origin main
 git push origin main --tags
 
+
+git fetch origin
+git checkout main
+git merge origin/feature/password-strength-validate
+git push origin main
+
 ========================
 7. NPM LOGIN & PUBLISH
 ========================
