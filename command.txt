@@ -1,0 +1,80 @@
+VALIDATION-MASTER PROJECT - IMPORTANT COMMANDS
+
+========================
+1. INSTALL DEPENDENCIES
+========================
+npm install
+
+========================
+2. RUN TESTS
+========================
+npm test
+
+========================
+3. RUN BUILD (if configured)
+========================
+npm run build
+
+========================
+4. RUN PROJECT (if applicable)
+========================
+node src/index.js
+
+========================
+5. VERSION MANAGEMENT
+========================
+npm version patch
+npm version minor
+npm version major
+
+========================
+6. GIT COMMANDS
+========================
+git init
+git add .
+git commit -m "initial commit"
+git push origin main
+git push origin main --tags
+
+========================
+7. NPM LOGIN & PUBLISH
+========================
+npm login
+npm publish --access public
+
+========================
+8. FIX PUBLISH ISSUES
+========================
+npm version patch
+npm publish --access public
+
+========================
+9. GITHUB RELEASE FLOW
+========================
+git tag v1.0.0
+git push origin v1.0.0
+
+========================
+10. CI/CD WORKFLOW FLOW
+========================
+- Push tag (v1.0.0)
+- GitHub Actions runs tests
+- Publishes to npm
+- Creates GitHub release
+
+========================
+11. INSTALL PACKAGE AFTER PUBLISH
+========================
+npm install validation-master
+
+========================
+12. DEBUG COMMANDS
+========================
+npm cache clean --force
+npm install --force
+node -v
+npm -v
+
+========================
+END OF FILE
+========================
