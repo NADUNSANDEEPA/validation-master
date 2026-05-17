@@ -6,6 +6,7 @@ import { validateNic } from "./validators/nic.validator.js";
 import { validatePassport } from "./validators/passport.validation.js";
 import { validateStrengthPassport } from "./validators/passowrd.validation.js";
 import { validateBankCardType } from "./validators/bank.cardtype.validator.js";
+import { generateRandomId } from "./validators/generate.random.id.js";
 
 const ValidationMaster = {
   EmailValidation: (value) => validateEmail(value),
@@ -14,6 +15,7 @@ const ValidationMaster = {
   PassportValidation: (value, countryCode) => validatePassport(value, countryCode),
   PasswordStrengthValidation: (value) => validateStrengthPassport(value),
   BankCardTypeValidation: (value) => validateBankCardType(value),
+  GenerateRandomId: (prefix, length, type) => generateRandomId(prefix, length, type),
 
   // cleaner alternative API
   email: validateEmail,
@@ -21,7 +23,8 @@ const ValidationMaster = {
   nic: validateNic,
   passport: validatePassport,
   passwordStrength: validateStrengthPassport,
-  bankCardType: validateBankCardType
+  bankCardType: validateBankCardType,
+  generateId: generateRandomId
 };
 
 export default ValidationMaster;
