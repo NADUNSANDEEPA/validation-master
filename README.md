@@ -1,12 +1,16 @@
 # ✅ verify-master
 
-A lightweight, zero-dependency validation library with built-in support for **195 countries** - designed to grow with your project.
+A lightweight, zero-dependency validation library with built-in support for **195+ countries**, designed for modern JavaScript applications including React, Vite, and Node.js.
  
-- 📧 Email
-- 📞 Phone Number
-- 🪪 NIC / National ID
-- 🛂 Passport
-- _More coming soon..._
+- 🛂 Passport validation (country-specific rules)
+- 🚗 Driving licence validation (195+ countries)
+- 💳 Bank card type detection
+- 🔐 Password strength checker
+- 📚 ISBN-10 / ISBN-13 validation
+- 🆔 Random ID generator
+- ⚡ Zero dependencies
+- 🌍 Global format support
+- ⚛️ Works with React, Vite, Node.js
 
 [![npm version](https://img.shields.io/npm/v/verify-master.svg)](https://www.npmjs.com/package/verify-master)
 [![license](https://img.shields.io/npm/l/verify-master.svg)](https://github.com/your-username/verify-master/blob/main/LICENSE)
@@ -121,9 +125,8 @@ Pull requests are welcome! Please open an issue first to discuss what you'd like
 ## 🔗 Links
 
 - [npm Package](https://www.npmjs.com/package/verify-master)
-- [GitHub Repository](https://github.com/your-username/verify-master)
-- [📖 Full Documentation](https://github.com/your-username/verify-master/wiki)
-- [Issue Tracker](https://github.com/your-username/verify-master/issues)
+- [GitHub Repository](https://github.com/NADUNSANDEEPA/validation-master)
+- [Full Documentation](https://verify-master.netlify.app/)
 
 ---
 
