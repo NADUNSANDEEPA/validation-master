@@ -705,6 +705,243 @@ function validatePassport(passport, countryCode = "DEFAULT") {
     );
 }
 
+function validateStrengthPassport(password) {
+    if (typeof password !== "string") {
+        return CommonResponse.failure(
+            "Password must be a string",
+            null,
+            400
+        );
+    }
+
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasDigit = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const isLongEnough = password.length >= 8;
+
+    if (!hasUpperCase) {
+        return CommonResponse.failure(
+            "Password must contain at least one uppercase letter",
+            null,
+            400
+        );
+    }
+
+    if (!hasLowerCase) {
+        return CommonResponse.failure(
+            "Password must contain at least one lowercase letter",
+            null,
+            400
+        );
+    }
+
+    if (!hasDigit) {
+        return CommonResponse.failure(
+            "Password must contain at least one digit",
+            null,
+            400
+        );
+    }
+
+    if (!hasSpecialChar) {
+        return CommonResponse.failure(
+            "Password must contain at least one special character",
+            null,
+            400
+        );
+    }
+
+    if (!isLongEnough) {
+        return CommonResponse.failure(
+            "Password must be at least 8 characters long",
+            null,
+            400
+        );
+    }
+
+    return CommonResponse.success("Success","Password is strong enough", 200);
+}
+
+const cardTypeRules = [
+    { name: "Visa", regex: /^4/ },
+
+    { name: "Mastercard", regex: /^(5[1-5]|2(2[2-9]|[3-6]|7[01]|720))/ },
+
+    { name: "American Express", regex: /^3[47]/ },
+
+    { name: "Discover", regex: /^(6011|65|64[4-9]|622)/ },
+
+    { name: "Diners Club", regex: /^3(0[0-5]|[68])/ },
+
+    { name: "JCB", regex: /^(352[8-9]|35[3-8])/ },
+
+    { name: "UnionPay", regex: /^62/ },
+
+    { name: "Maestro", regex: /^(50|5[6-9]|6[0-9])/ },
+
+    { name: "RuPay (India)", regex: /^60|65|81|82|508|353|356/ },
+
+    { name: "Verve (Africa)", regex: /^506[0-9]|6500[0-9]{2}/ },
+
+    { name: "Troy (Turkey)", regex: /^9792/ },
+
+    { name: "MIR (Russia)", regex: /^220[0-4]/ }
+];
+
+function validateBankCardType(cardNumber) {
+    if (typeof cardNumber !== "string") {
+        return CommonResponse.failure("Card number must be a string", null, 400);
+    }
+
+    const matchedType = cardTypeRules.find(rule => rule.regex.test(cardNumber));
+
+    if (matchedType) {
+        var successObject = {
+            cardNumber: cardNumber,
+            cardType: matchedType.name
+        };
+        return CommonResponse.success(successObject, "Valid card type", 200);
+    } else {
+        return CommonResponse.failure("Unknown card type", null, 400);
+    }
+}
+
+function generateRandomId(prefix, length, type) {
+ 
+    var prefixStr = "";
+
+    if(prefix && typeof prefix !== "string") {
+        prefixStr = "ID";
+    } else if (prefix) {
+        prefixStr = prefix;
+    }
+
+    var randomId = "";
+
+    // Generate random id
+    if(type === "NUMBER") {
+        randomId = Math.random().toString().substr(2, length);
+    } else if (type === "NUMBER_AND_LETTER") {
+        randomId = Math.random().toString(36).substr(2, length);
+    } else {
+        randomId = Math.random().toString(36).substr(2, length);
+    }
+
+    var idObject = {
+        id: prefixStr + randomId
+    };
+    return CommonResponse.success(idObject, "Random ID generated successfully", 200);
+}
+
+/**
+ * Redux-style constant patterns (OLD + NEW combined approach)
+ */
+const ISBN_RULES = {
+    ISBN10: {
+        regex: /^\d{9}[\dX]$/,
+    },
+    ISBN13: {
+        regex: /^(978|979)\d{10}$/
+    }
+};
+
+/**
+ * Normalize input (remove hyphens/spaces)
+ */
+function normalizeIsbn(value) {
+    return value.replace(/[-\s]/g, "");
+}
+
+/**
+ * ISBN-10 check digit validation
+ */
+function isValidIsbn10(isbn) {
+    let sum = 0;
+
+    for (let i = 0; i < 9; i++) {
+        sum += (i + 1) * parseInt(isbn[i]);
+    }
+
+    let lastChar = isbn[9];
+    let check = lastChar === "X" ? 10 : parseInt(lastChar);
+
+    sum += 10 * check;
+
+    return sum % 11 === 0;
+}
+
+/**
+ * ISBN-13 check digit validation
+ */
+function isValidIsbn13(isbn) {
+    let sum = 0;
+
+    for (let i = 0; i < 12; i++) {
+        let num = parseInt(isbn[i]);
+
+        if (i % 2 === 0) {
+            sum += num;
+        } else {
+            sum += num * 3;
+        }
+    }
+
+    let checkDigit = (10 - (sum % 10)) % 10;
+
+    return checkDigit === parseInt(isbn[12]);
+}
+
+/**
+ * MAIN VALIDATION FUNCTION (Redux pattern style reducer logic)
+ */
+function validateIsbn(value) {
+
+    if (typeof value !== "string") {
+        return CommonResponse.failure("ISBN must be a string", null, 400);
+    }
+
+    const isbn = normalizeIsbn(value);
+
+    let result = {
+        isbn,
+        type: null,
+        valid: false
+    };
+
+    // 🔹 ISBN-10 flow (OLD pattern)
+    if (ISBN_RULES.ISBN10.regex.test(isbn)) {
+        result.type = "ISBN-10";
+        result.valid = isValidIsbn10(isbn);
+    }
+
+    // 🔹 ISBN-13 flow (NEW pattern)
+    else if (ISBN_RULES.ISBN13.regex.test(isbn)) {
+        result.type = "ISBN-13";
+        result.valid = isValidIsbn13(isbn);
+    }
+
+    // ❌ Unknown format
+    else {
+        return CommonResponse.failure("Invalid ISBN format", null, 400);
+    }
+
+    // final response (Redux-like state result)
+    if (result.valid) {
+        return CommonResponse.success(
+            result,
+            "Valid ISBN",
+            200
+        );
+    }
+
+    return CommonResponse.failure(
+        "Invalid ISBN check digit",
+        result,
+        400
+    );
+}
+
 // src/index.js
 
 
@@ -713,12 +950,20 @@ const ValidationMaster = {
   PhoneValidation: (value) => validatePhone(value),
   NicValidation: (value, country) => validateNic(value, country),
   PassportValidation: (value, countryCode) => validatePassport(value, countryCode),
+  PasswordStrengthValidation: (value) => validateStrengthPassport(value),
+  BankCardTypeValidation: (value) => validateBankCardType(value),
+  GenerateRandomId: (prefix, length, type) => generateRandomId(prefix, length, type),
+  IsbnValidation: (value) => validateIsbn(value),
 
   // cleaner alternative API
   email: validateEmail,
   phone: validatePhone,
   nic: validateNic,
   passport: validatePassport,
+  passwordStrength: validateStrengthPassport,
+  bankCardType: validateBankCardType,
+  generateId: generateRandomId,
+  isbn: validateIsbn
 };
 
 export { ValidationMaster as default };

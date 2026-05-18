@@ -8,6 +8,7 @@ import { validateStrengthPassport } from "./validators/passowrd.validation.js";
 import { validateBankCardType } from "./validators/bank.cardtype.validator.js";
 import { generateRandomId } from "./validators/generate.random.id.js";
 import { validateIsbn } from "./validators/isbn.validator.js";
+import { validateDrivingLicence } from "./validators/driving.licence.validator.js"; 
 
 const ValidationMaster = {
   EmailValidation: (value) => validateEmail(value),
@@ -18,6 +19,7 @@ const ValidationMaster = {
   BankCardTypeValidation: (value) => validateBankCardType(value),
   GenerateRandomId: (prefix, length, type) => generateRandomId(prefix, length, type),
   IsbnValidation: (value) => validateIsbn(value),
+  DrivingLicenceValidation: (value, countryCode) => validateDrivingLicence(value, countryCode),
 
   // cleaner alternative API
   email: validateEmail,
@@ -27,7 +29,8 @@ const ValidationMaster = {
   passwordStrength: validateStrengthPassport,
   bankCardType: validateBankCardType,
   generateId: generateRandomId,
-  isbn: validateIsbn
+  isbn: validateIsbn,
+  drivingLicence: validateDrivingLicence,
 };
 
 export default ValidationMaster;
